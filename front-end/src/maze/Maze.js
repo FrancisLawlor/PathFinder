@@ -8,7 +8,8 @@ class Maze extends Component {
     this.state = {
       squares: Array(9).fill(null),
       height: 5,
-      width: 5
+      width: 5,
+      coords: []
     };
   }
 
@@ -19,9 +20,14 @@ class Maze extends Component {
           squares={this.state.squares.slice()}
           width={this.state.width}
           height={this.state.height}
+          coords={this.state.coords}
         />
       </div>
     );
+  }
+
+  componentDidMount() {
+    console.log(this.state.coords)
   }
 }
 

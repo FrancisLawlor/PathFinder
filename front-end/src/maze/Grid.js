@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Square from "./Square";
 
 class Grid extends Component {
-  renderSquare(i) {
-    return <Square value={i} />;
+  renderSquare(coord) {
+    return <Square coord={coord} />;
   }
 
   createGrid(height, width) {
@@ -12,7 +12,9 @@ class Grid extends Component {
     for (let i = 0; i < height; i++) {
       let row = [];
       for (let j = 0; j < width; j++) {
-        row.push(this.renderSquare(j));
+        let coord = {row: i, col: j}
+        row.push(this.renderSquare(coord));
+        this.props.coords.push(coord)
       }
       grid.push(<div className="grid-row">{row}</div>);
     }
