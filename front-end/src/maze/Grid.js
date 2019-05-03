@@ -2,21 +2,32 @@ import React, { Component } from "react";
 import Square from "./Square";
 
 class Grid extends Component {
-  renderSquare(coord) {
-    return <Square coord={coord} />;
+  renderSquare(i, coord) {
+    return (
+      <Square
+        key={i}
+        value={this.props.squares[i]}
+        onClick={() => this.props.onClick(i, coord)}
+      />
+    );
   }
 
   createGrid(height, width) {
     let grid = [];
+    let id = 0;
 
     for (let i = 0; i < height; i++) {
       let row = [];
       for (let j = 0; j < width; j++) {
-        let coord = {row: i, col: j}
-        row.push(this.renderSquare(coord));
-        this.props.coords.push(coord)
+        let coord = { row: i, col: j };
+        row.push(this.renderSquare(id, coord));
+        id += 1;
       }
-      grid.push(<div className="grid-row">{row}</div>);
+      grid.push(
+        <div className="grid-row" key={id}>
+          {row}
+        </div>
+      );
     }
 
     return grid;
