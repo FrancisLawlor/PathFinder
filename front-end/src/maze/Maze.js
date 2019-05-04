@@ -13,7 +13,8 @@ class Maze extends Component {
       width: width,
       coords: {
         start: { row: null, col: null },
-        end: { row: null, col: null }
+        end: { row: null, col: null },
+        obstacles: []
       },
       startPlaced: false,
       endPlaced: false
@@ -21,11 +22,14 @@ class Maze extends Component {
   }
 
   handleSquareClick(i, coord) {
+    const squares = this.state.squares.slice();
+
     if (!this.state.startPlaced || !this.state.endPlaced) {
       let marker = "S";
       let updatedCoord = {
-        start: { row: coord.row, col: coord.col },
-        end: { row: this.state.coords.end.row, col: this.state.coords.end.col }
+        start: coord,
+        end: this.state.coords.end,
+        obstacles: this.state.coords.obstacles
       };
       if (!this.state.startPlaced) {
         this.setState({ startPlaced: true });
@@ -33,20 +37,37 @@ class Maze extends Component {
         this.setState({ endPlaced: true });
         marker = "E";
         updatedCoord = {
-          start: {
-            row: this.state.coords.start.row,
-            col: this.state.coords.start.col
-          },
-          end: {
-            row: coord.row,
-            col: coord.col
-          }
+          start: this.state.coords.start,
+          end: coord,
+          obstacles: this.state.coords.obstacles
         };
       }
-      const squares = this.state.squares.slice();
       squares[i] = marker;
       this.setState({ squares: squares });
       this.setState({ coords: updatedCoord });
+    } else {
+      if (this.state.squares[i] === null) {
+        squares[i] = "X";
+        this.setState({
+          coords: {
+            start: this.state.coords.start,
+            end: this.state.coords.end,
+            obstacles: this.state.coords.obstacles.concat([coord])
+          }
+        });
+      } else if (this.state.squares[i] === "X") {
+        squares[i] = null;
+        this.setState({
+          coords: {
+            start: this.state.coords.start,
+            end: this.state.coords.end,
+            obstacles: this.state.coords.obstacles.filter(
+              item => item.col !== coord.col || item.row !== coord.row
+            )
+          }
+        });
+      }
+      this.setState({ squares: squares });
     }
   }
 
