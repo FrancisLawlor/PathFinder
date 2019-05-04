@@ -65,7 +65,12 @@ class Maze extends Component {
           coords={this.state.coords}
           onClick={(i, coord) => this.handleSquareClick(i, coord)}
         />
-        <button onClick={() => this.postCoordinates()}>Post Coordinates</button>
+        <button
+          disabled={!this.state.startPlaced || !this.state.endPlaced}
+          onClick={() => this.postCoordinates()}
+        >
+          Post Coordinates
+        </button>
       </div>
     );
   }
