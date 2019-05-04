@@ -73,7 +73,14 @@ class Maze extends Component {
 
   postCoordinates() {
     // post coordinates
-    alert("coords: " + JSON.stringify(this.state.coords));
+    fetch("http://localhost:3004/calculated_path_response", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(this.state.coords)
+    })
+      .then(response => response.json())
+      .then(data => alert(JSON.stringify(data)));
+    // alert("coords: " + JSON.stringify(this.state.coords));
   }
 
   render() {
