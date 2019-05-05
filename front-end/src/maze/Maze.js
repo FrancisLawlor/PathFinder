@@ -72,15 +72,25 @@ class Maze extends Component {
   }
 
   postCoordinates() {
-    // post coordinates
     fetch("http://localhost:3004/calculated_path_response", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(this.state.coords)
     })
       .then(response => response.json())
-      .then(data => alert(JSON.stringify(data)));
-    // alert("coords: " + JSON.stringify(this.state.coords));
+      .then(data => {
+        this.setState({ squares: this.setPathSquares(data.path_squares) });
+      });
+  }
+
+  setPathSquares(path_squares) {
+    let squares = this.state.squares;
+
+    for (let i = 0; i < path_squares.length; i++) {
+      let index = path_squares[i].row * this.state.width + path_squares[i].col;
+      squares[index] = "P";
+    }
+    return squares;
   }
 
   render() {
