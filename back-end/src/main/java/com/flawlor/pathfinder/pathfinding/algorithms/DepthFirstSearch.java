@@ -6,11 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DepthFirstSearch {
-    private static boolean foundEnd = false;
+public class DepthFirstSearch implements Algorithm {
+    private boolean foundEnd = false;
 
-    public static void findCoveredSquares(char[][] grid, List<Coordinate> coveredSquares, List<Coordinate> pathSquares,
-                                          Coordinate start, Coordinate end) {
+    @Override
+    public void findPath(char[][] grid, List<Coordinate> coveredSquares, List<Coordinate> pathSquares,
+                                Coordinate start, Coordinate end) {
         Map<Coordinate, Coordinate> parents = new HashMap<>();
         recursiveDFS(grid, coveredSquares, start.getRow(), start.getCol(), -1, -1, parents);
 
@@ -26,7 +27,7 @@ public class DepthFirstSearch {
         foundEnd = false;
     }
 
-    private static void recursiveDFS(char[][] grid, List<Coordinate> coveredSquares, int i, int j, int prevI, int prevJ,
+    private void recursiveDFS(char[][] grid, List<Coordinate> coveredSquares, int i, int j, int prevI, int prevJ,
                                      Map<Coordinate, Coordinate> parents) {
         if (i < 0 || i >= grid.length || j < 0 || i >= grid[0].length || grid[i][j] == 'P' || foundEnd) {
             return;
