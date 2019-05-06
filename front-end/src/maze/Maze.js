@@ -83,7 +83,7 @@ class Maze extends Component {
     })
       .then(response => response.json())
       .then(data => {
-        this.setState({ squares: this.setPathSquares(data.covered_squares) });
+        this.setState({ squares: this.setPathSquares(data.path_squares) });
       });
   }
 

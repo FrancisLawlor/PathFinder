@@ -37,7 +37,8 @@ public class PathRequestController {
 
         DepthFirstSearch algorithm = new DepthFirstSearch();
 
-        PathFinder.calculatePath(algorithm, grid, coveredSquares, pathSquares, pathRequest.getCoords().getStart());
+        PathFinder.calculatePath(algorithm, grid, coveredSquares, pathSquares, pathRequest.getCoords().getStart(),
+                pathRequest.getCoords().getEnd());
 
         PathResponse pathResponse = new PathResponse(coveredSquares, pathSquares);
 
