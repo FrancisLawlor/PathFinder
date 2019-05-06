@@ -6,11 +6,11 @@ import java.util.List;
 
 @Data
 public class PathResponse {
-    private List<Coordinate> coveredSquares;
-    private List<Coordinate> pathSquares;
+    private List<Coordinate> covered_squares;
+    private List<Coordinate> path_squares;
 
     public PathResponse(List<Coordinate> coveredSquares, List<Coordinate> pathSquares) {
-        this.coveredSquares = coveredSquares;
-        this.pathSquares = pathSquares;
+        this.covered_squares = coveredSquares;
+        this.path_squares = pathSquares;
     }
 }

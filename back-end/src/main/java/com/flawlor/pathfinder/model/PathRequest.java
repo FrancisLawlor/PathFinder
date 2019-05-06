@@ -2,17 +2,17 @@ package com.flawlor.pathfinder.model;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 public class PathRequest {
-    private Coordinate start;
-    private Coordinate end;
-    private List<Coordinate> obstacles;
+    private int height;
+    private int width;
+    private CoordinateInfo coords;
 
-    public PathRequest(Coordinate start, Coordinate end, List<Coordinate> obstacles) {
-        this.start = start;
-        this.end = end;
-        this.obstacles = obstacles;
+    public PathRequest() {}
+
+    public PathRequest(int height, int width, CoordinateInfo coords) {
+        this.height = height;
+        this.width = width;
+        this.coords = coords;
     }
 }

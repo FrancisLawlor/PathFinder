@@ -2,13 +2,18 @@ package com.flawlor.pathfinder.controller;
 
 import com.flawlor.pathfinder.assembler.PathResponseResourceAssembler;
 import com.flawlor.pathfinder.model.Coordinate;
+import com.flawlor.pathfinder.model.PathRequest;
 import com.flawlor.pathfinder.model.PathResponse;
+import com.flawlor.pathfinder.pathfinding.algorithms.DepthFirstSearch;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import com.flawlor.pathfinder.pathfinding.PathFinder;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,23 +27,21 @@ public class PathRequestController {
 
     @CrossOrigin
     @PostMapping(path = "/calculate_path", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public Resource<PathResponse> calculatePath() {
+    public Resource<PathResponse> calculatePath(@Valid @RequestBody PathRequest pathRequest) {
         List<Coordinate> coveredSquares = new ArrayList<>();
         List<Coordinate> pathSquares = new ArrayList<>();
 
-        coveredSquares.add(new Coordinate(0, 0));
-        coveredSquares.add(new Coordinate(0, 1));
-        coveredSquares.add(new Coordinate(0, 2));
-        coveredSquares.add(new Coordinate(0, 3));
+        char[][] grid = new char[pathRequest.getHeight()][pathRequest.getWidth()];
+        grid[pathRequest.getCoords().getStart().getRow()][pathRequest.getCoords().getStart().getCol()] = 'S';
+        grid[pathRequest.getCoords().getEnd().getRow()][pathRequest.getCoords().getEnd().getCol()] = 'E';
 
-        pathSquares.add(new Coordinate(1, 0));
-        pathSquares.add(new Coordinate(1, 1));
-        pathSquares.add(new Coordinate(1, 2));
-        pathSquares.add(new Coordinate(1, 3));
+        DepthFirstSearch algorithm = new DepthFirstSearch();
+
+        PathFinder.calculatePath(algorithm, grid, coveredSquares, pathSquares, pathRequest.getCoords().getStart());
 
         PathResponse pathResponse = new PathResponse(coveredSquares, pathSquares);
 
-        return this.assembler.toResource(pathResponse);
+        return this.assembler.toResource(pathRequest, pathResponse);
 
     }
 }
