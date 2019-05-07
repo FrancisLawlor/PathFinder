@@ -37,30 +37,40 @@ public class BreadthFirstSearch implements Algorithm {
         rows.add(i);
         cols.add(j);
 
+        List<Coordinate> currentParents = new ArrayList<>();
+        currentParents.add(null);
+        int remainingChildrenForCurrentParent = 1;
+
         while (rows.size() > 0) {
             int row = rows.remove(0);
             int col = cols.remove(0);
 
+            currentParents.add(new Coordinate(row, col));
+
+            remainingChildrenForCurrentParent--;
+
+            if (remainingChildrenForCurrentParent == 0) {
+                remainingChildrenForCurrentParent = 4;
+                currentParents.remove(0);
+            }
+
             if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length || grid[row][col] == 'P' || foundEnd) {
                 continue;
             }
+
+            parents.put(new Coordinate(row, col), currentParents.get(0));
 
             if (grid[row][col] == 'E') {
                 foundEnd = true;
                 return;
             }
 
-            if (grid[row][col] != 'S') {
-                grid[row][col] = 'P';
-                coveredSquares.add(new Coordinate(row, col));
-            }
-
+            grid[row][col] = 'P';
+            coveredSquares.add(new Coordinate(row, col));
 
             for (int a = 0; a < ROW_VECTOR.length; a++) {
                 rows.add(row + ROW_VECTOR[a]);
                 cols.add(col + COL_VECTOR[a]);
-
-                parents.put(new Coordinate(row + ROW_VECTOR[a], col + COL_VECTOR[a]), new Coordinate(row, col));
             }
         }
     }
