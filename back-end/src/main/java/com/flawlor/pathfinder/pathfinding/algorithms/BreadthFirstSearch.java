@@ -26,6 +26,8 @@ public class BreadthFirstSearch implements Algorithm {
             }
         }
 
+        pathSquares.remove(0);
+
         foundEnd = false;
     }
 
@@ -45,13 +47,14 @@ public class BreadthFirstSearch implements Algorithm {
             int row = rows.remove(0);
             int col = cols.remove(0);
 
-            currentParents.add(new Coordinate(row, col));
+            if (remainingChildrenForCurrentParent == 4) {
+                currentParents.remove(0);
+            }
 
             remainingChildrenForCurrentParent--;
 
             if (remainingChildrenForCurrentParent == 0) {
                 remainingChildrenForCurrentParent = 4;
-                currentParents.remove(0);
             }
 
             if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length || grid[row][col] == 'P' || foundEnd) {
@@ -59,14 +62,18 @@ public class BreadthFirstSearch implements Algorithm {
             }
 
             parents.put(new Coordinate(row, col), currentParents.get(0));
+            currentParents.add(new Coordinate(row, col));
 
             if (grid[row][col] == 'E') {
                 foundEnd = true;
                 return;
             }
 
+            if (grid[row][col] != 'S') {
+                coveredSquares.add(new Coordinate(row, col));
+            }
+
             grid[row][col] = 'P';
-            coveredSquares.add(new Coordinate(row, col));
 
             for (int a = 0; a < ROW_VECTOR.length; a++) {
                 rows.add(row + ROW_VECTOR[a]);
