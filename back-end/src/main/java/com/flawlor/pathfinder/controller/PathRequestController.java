@@ -37,6 +37,10 @@ public class PathRequestController {
         grid[pathRequest.getCoords().getStart().getRow()][pathRequest.getCoords().getStart().getCol()] = 'S';
         grid[pathRequest.getCoords().getEnd().getRow()][pathRequest.getCoords().getEnd().getCol()] = 'E';
 
+        for (Coordinate obstacle: pathRequest.getCoords().getObstacles()) {
+            grid[obstacle.getRow()][obstacle.getCol()] = 'X';
+        }
+
         Algorithm algorithm = new BreadthFirstSearch();
 
         PathFinder.calculatePath(algorithm, grid, coveredSquares, pathSquares, pathRequest.getCoords().getStart(),

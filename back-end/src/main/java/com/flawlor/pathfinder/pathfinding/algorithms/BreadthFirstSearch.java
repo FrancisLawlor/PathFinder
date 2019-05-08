@@ -57,7 +57,7 @@ public class BreadthFirstSearch implements Algorithm {
                 remainingChildrenForCurrentParent = 4;
             }
 
-            if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length || grid[row][col] == 'P' || foundEnd) {
+            if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length || grid[row][col] == 'P' || grid[row][col] == 'X' || foundEnd) {
                 continue;
             }
 
