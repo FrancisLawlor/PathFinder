@@ -100,6 +100,11 @@ class Maze extends Component {
     return squares;
   }
 
+  setStateDuringOnChange(field, value) {
+    console.log(field + " " + value);
+    this.setState({ [field]: value });
+  }
+
   render() {
     return (
       <div className="maze">
@@ -128,7 +133,9 @@ class Maze extends Component {
           <option value="breadth_first_search">Breadth First Search</option>
         </select>
 
-        <DimensionInput />
+        <DimensionInput
+          onChange={(field, value) => this.setStateDuringOnChange(field, value)}
+        />
       </div>
     );
   }

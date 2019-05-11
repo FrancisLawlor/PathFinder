@@ -16,6 +16,8 @@ class DimensionInput extends Component {
           id="width_slider"
           min="2"
           max="15"
+          state_field_name="width"
+          onChange={(field, value) => this.props.onChange(field, value)}
         />
 
         <DimensionSlider
@@ -24,6 +26,8 @@ class DimensionInput extends Component {
           id="height_slider"
           min="2"
           max="15"
+          state_field_name="height"
+          onChange={(field, value) => this.props.onChange(field, value)}
         />
       </div>
     );

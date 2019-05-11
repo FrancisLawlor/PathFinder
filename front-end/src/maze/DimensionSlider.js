@@ -13,6 +13,10 @@ class DimensionSlider extends Component {
         <input
           onChange={event => {
             this.setState({ width_value: event.target.value });
+            this.props.onChange(
+              this.props.state_field_name,
+              event.target.value
+            );
           }}
           id={this.props.id}
           type="range"
