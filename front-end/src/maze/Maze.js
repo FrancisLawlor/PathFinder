@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Grid from "./Grid";
 import "./Maze.css";
+import DimensionInput from "./DimensionInput";
 
 class Maze extends Component {
   constructor(props) {
@@ -126,6 +127,8 @@ class Maze extends Component {
           <option value="depth_first_search">Depth First Search</option>
           <option value="breadth_first_search">Breadth First Search</option>
         </select>
+
+        <DimensionInput />
       </div>
     );
   }
