@@ -1,16 +1,18 @@
-package com.flawlor.pathfinder.pathfinding.algorithms;
+package com.flawlor.pathfinder.pathfinding.algorithms.strategies;
 
 import com.flawlor.pathfinder.model.Coordinate;
+import com.flawlor.pathfinder.pathfinding.algorithms.AlgorithmStrategy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BreadthFirstSearch implements Algorithm {
+public class BreadthFirstSearch implements AlgorithmStrategy {
     private static final int[] ROW_VECTOR = {1, -1, 0, 0};
     private static final int[] COL_VECTOR = {0, 0, 1, -1};
     private boolean foundEnd = false;
+
     @Override
     public void findPath(char[][] grid, List<Coordinate> coveredSquares, List<Coordinate> pathSquares, Coordinate start,
                          Coordinate end) {
@@ -57,7 +59,8 @@ public class BreadthFirstSearch implements Algorithm {
                 remainingChildrenForCurrentParent = 4;
             }
 
-            if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length || grid[row][col] == 'P' || grid[row][col] == 'X' || foundEnd) {
+            if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length || grid[row][col] == 'P' ||
+                    grid[row][col] == 'X' || foundEnd) {
                 continue;
             }
 

@@ -16,6 +16,7 @@ class Maze extends Component {
         end: { row: null, col: null },
         obstacles: []
       },
+      algorithm: "",
       startPlaced: false,
       endPlaced: false
     };
@@ -78,7 +79,8 @@ class Maze extends Component {
       body: JSON.stringify({
         height: this.state.height,
         width: this.state.width,
-        coords: this.state.coords
+        coords: this.state.coords,
+        algorithm: this.state.algorithm
       })
     })
       .then(response => response.json())
@@ -113,8 +115,25 @@ class Maze extends Component {
         >
           Post Coordinates
         </button>
+        <select
+          id="algorithm_dropdown"
+          onChange={() => {
+            this.setState({
+              algorithm: document.getElementById("algorithm_dropdown").value
+            });
+          }}
+        >
+          <option value="depth_first_search">Depth First Search</option>
+          <option value="breadth_first_search">Breadth First Search</option>
+        </select>
       </div>
     );
+  }
+
+  componentDidMount() {
+    this.setState({
+      algorithm: document.getElementById("algorithm_dropdown").value
+    });
   }
 }
 

@@ -4,7 +4,7 @@ import com.flawlor.pathfinder.model.Coordinate;
 
 import java.util.List;
 
-public interface Algorithm {
+public interface AlgorithmStrategy {
     void findPath(char[][] grid, List<Coordinate> coveredSquares, List<Coordinate> pathSquares,
                   Coordinate start, Coordinate end);
 }

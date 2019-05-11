@@ -4,9 +4,8 @@ import com.flawlor.pathfinder.assembler.PathResponseResourceAssembler;
 import com.flawlor.pathfinder.model.Coordinate;
 import com.flawlor.pathfinder.model.PathRequest;
 import com.flawlor.pathfinder.model.PathResponse;
-import com.flawlor.pathfinder.pathfinding.algorithms.Algorithm;
-import com.flawlor.pathfinder.pathfinding.algorithms.BreadthFirstSearch;
-import com.flawlor.pathfinder.pathfinding.algorithms.DepthFirstSearch;
+import com.flawlor.pathfinder.pathfinding.algorithms.AlgorithmStrategy;
+import com.flawlor.pathfinder.pathfinding.algorithms.AlgorithmStrategyFactory;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -41,7 +40,9 @@ public class PathRequestController {
             grid[obstacle.getRow()][obstacle.getCol()] = 'X';
         }
 
-        Algorithm algorithm = new BreadthFirstSearch();
+        AlgorithmStrategyFactory algorithmStrategyFactory = new AlgorithmStrategyFactory();
+
+        AlgorithmStrategy algorithm = algorithmStrategyFactory.createAlgorithmStrategy(pathRequest.getAlgorithm());
 
         PathFinder.calculatePath(algorithm, grid, coveredSquares, pathSquares, pathRequest.getCoords().getStart(),
                 pathRequest.getCoords().getEnd());

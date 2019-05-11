@@ -13,7 +13,6 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @Component
 public class PathResponseResourceAssembler implements ResourceAssembler<PathResponse, Resource<PathResponse>> {
     public Resource<PathResponse> toResource(PathRequest pathRequest, PathResponse pathResponse) {
-
         return new Resource<>(pathResponse,
                 linkTo(methodOn(PathRequestController.class).calculatePath(pathRequest)).withSelfRel());
     }

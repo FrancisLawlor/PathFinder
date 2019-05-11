@@ -1,12 +1,15 @@
-package com.flawlor.pathfinder.pathfinding.algorithms;
+package com.flawlor.pathfinder.pathfinding.algorithms.strategies;
 
 import com.flawlor.pathfinder.model.Coordinate;
+import com.flawlor.pathfinder.pathfinding.algorithms.AlgorithmStrategy;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DepthFirstSearch implements Algorithm {
+public class DepthFirstSearch implements AlgorithmStrategy {
+    private static final int[] ROW_VECTOR = {1, -1, 0, 0};
+    private static final int[] COL_VECTOR = {0, 0, 1, -1};
     private boolean foundEnd = false;
 
     @Override
@@ -29,7 +32,7 @@ public class DepthFirstSearch implements Algorithm {
 
     private void recursiveDFS(char[][] grid, List<Coordinate> coveredSquares, int i, int j, int prevI, int prevJ,
                                      Map<Coordinate, Coordinate> parents) {
-        if (i < 0 || i >= grid.length || j < 0 || i >= grid[0].length || grid[i][j] == 'P' || foundEnd) {
+        if (i < 0 || i >= grid.length || j < 0 || i >= grid[0].length || grid[i][j] == 'P' || grid[i][j] == 'X' || foundEnd) {
             return;
         }
 
@@ -45,9 +48,8 @@ public class DepthFirstSearch implements Algorithm {
             parents.put(new Coordinate(i, j), new Coordinate(prevI, prevJ));
         }
 
-        recursiveDFS(grid, coveredSquares, i + 1, j, i, j, parents);
-        recursiveDFS(grid, coveredSquares, i - 1, j, i, j, parents);
-        recursiveDFS(grid, coveredSquares, i, j + 1, i, j, parents);
-        recursiveDFS(grid, coveredSquares, i, j - 1, i, j, parents);
+        for (int a = 0; a < ROW_VECTOR.length; a++) {
+            recursiveDFS(grid, coveredSquares, i + ROW_VECTOR[a], j + COL_VECTOR[a], i, j, parents);
+        }
     }
 }
