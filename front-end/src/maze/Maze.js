@@ -6,7 +6,7 @@ import DimensionInput from "./DimensionInput";
 class Maze extends Component {
   constructor(props) {
     super(props);
-    let height = 5;
+    let height = 6;
     let width = 6;
     this.state = {
       squares: Array(height * width).fill(null),
@@ -24,7 +24,7 @@ class Maze extends Component {
   }
 
   handleSquareClick(i, coord) {
-    const squares = this.state.squares.slice();
+    const squares = this.state.squares;
 
     if (!this.state.startPlaced || !this.state.endPlaced) {
       let marker = "S";
@@ -45,9 +45,9 @@ class Maze extends Component {
         };
       }
       squares[i] = marker;
-      this.setState({ squares: squares });
-      this.setState({ coords: updatedCoord });
+      this.setState({ squares: squares, coords: updatedCoord });
     } else {
+      alert("clicked: " + this.state.squares[i]);
       if (this.state.squares[i] === null) {
         squares[i] = "X";
         this.setState({
@@ -101,15 +101,20 @@ class Maze extends Component {
   }
 
   setStateDuringOnChange(field, value) {
-    console.log(field + " " + value);
-    this.setState({ [field]: value });
+    let otherDimension =
+      field === "width" ? this.state.height : this.state.width;
+
+    this.setState({
+      [field]: value,
+      squares: Array(value * otherDimension).fill(null)
+    });
   }
 
   render() {
     return (
       <div className="maze">
         <Grid
-          squares={this.state.squares.slice()}
+          squares={this.state.squares}
           width={this.state.width}
           height={this.state.height}
           coords={this.state.coords}
@@ -129,12 +134,14 @@ class Maze extends Component {
             });
           }}
         >
-          <option value="depth_first_search">Depth First Search</option>
           <option value="breadth_first_search">Breadth First Search</option>
+          <option value="depth_first_search">Depth First Search</option>
         </select>
 
         <DimensionInput
           onChange={(field, value) => this.setStateDuringOnChange(field, value)}
+          height={this.state.height}
+          width={this.state.width}
         />
       </div>
     );

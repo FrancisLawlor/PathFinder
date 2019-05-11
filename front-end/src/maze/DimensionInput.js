@@ -12,7 +12,7 @@ class DimensionInput extends Component {
       <div>
         <DimensionSlider
           label="Width"
-          width_value="6"
+          width_value={this.props.width}
           id="width_slider"
           min="2"
           max="15"
@@ -22,7 +22,7 @@ class DimensionInput extends Component {
 
         <DimensionSlider
           label="Height"
-          width_value="6"
+          width_value={this.props.width}
           id="height_slider"
           min="2"
           max="15"
