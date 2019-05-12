@@ -17,10 +17,11 @@ class Maze extends Component {
         end: { row: null, col: null },
         obstacles: []
       },
-      algorithm: "depth_first_search",
+      algorithm: "breadth_first_search",
       startPlaced: false,
       endPlaced: false,
-      gridIsCreated: false
+      gridIsCreated: false,
+      pathReceived: false
     };
   }
 
@@ -48,26 +49,28 @@ class Maze extends Component {
       squares[i] = marker;
       this.setState({ squares: squares, coords: updatedCoord });
     } else {
-      if (this.state.squares[i] === null) {
-        squares[i] = "X";
-        this.setState({
-          coords: {
-            start: this.state.coords.start,
-            end: this.state.coords.end,
-            obstacles: this.state.coords.obstacles.concat([coord])
-          }
-        });
-      } else if (this.state.squares[i] === "X") {
-        squares[i] = null;
-        this.setState({
-          coords: {
-            start: this.state.coords.start,
-            end: this.state.coords.end,
-            obstacles: this.state.coords.obstacles.filter(
-              item => item.col !== coord.col || item.row !== coord.row
-            )
-          }
-        });
+      if (!this.state.pathReceived) {
+        if (this.state.squares[i] === null) {
+          squares[i] = "X";
+          this.setState({
+            coords: {
+              start: this.state.coords.start,
+              end: this.state.coords.end,
+              obstacles: this.state.coords.obstacles.concat([coord])
+            }
+          });
+        } else if (this.state.squares[i] === "X") {
+          squares[i] = null;
+          this.setState({
+            coords: {
+              start: this.state.coords.start,
+              end: this.state.coords.end,
+              obstacles: this.state.coords.obstacles.filter(
+                item => item.col !== coord.col || item.row !== coord.row
+              )
+            }
+          });
+        }
       }
       this.setState({ squares: squares });
     }
@@ -86,7 +89,10 @@ class Maze extends Component {
     })
       .then(response => response.json())
       .then(data => {
-        this.setState({ squares: this.setPathSquares(data.path_squares) });
+        this.setState({
+          squares: this.setPathSquares(data.path_squares),
+          pathReceived: true
+        });
       });
   }
 
@@ -122,12 +128,17 @@ class Maze extends Component {
             onClick={(i, coord) => this.handleSquareClick(i, coord)}
           />
           <button
-            disabled={!this.state.startPlaced || !this.state.endPlaced}
+            disabled={
+              !this.state.startPlaced ||
+              !this.state.endPlaced ||
+              this.state.pathReceived
+            }
             onClick={() => this.postCoordinates()}
           >
             Post Coordinates
           </button>
           <select
+            disabled={this.state.pathReceived}
             defaultValue={this.state.algorithm}
             id="algorithm_dropdown"
             onChange={event => {
