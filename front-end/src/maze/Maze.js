@@ -17,9 +17,10 @@ class Maze extends Component {
         end: { row: null, col: null },
         obstacles: []
       },
-      algorithm: "",
+      algorithm: "depth_first_search",
       startPlaced: false,
-      endPlaced: false
+      endPlaced: false,
+      gridIsCreated: false
     };
   }
 
@@ -47,7 +48,6 @@ class Maze extends Component {
       squares[i] = marker;
       this.setState({ squares: squares, coords: updatedCoord });
     } else {
-      alert("clicked: " + this.state.squares[i]);
       if (this.state.squares[i] === null) {
         squares[i] = "X";
         this.setState({
@@ -111,46 +111,52 @@ class Maze extends Component {
   }
 
   render() {
-    return (
-      <div className="maze">
-        <Grid
-          squares={this.state.squares}
-          width={this.state.width}
-          height={this.state.height}
-          coords={this.state.coords}
-          onClick={(i, coord) => this.handleSquareClick(i, coord)}
-        />
-        <button
-          disabled={!this.state.startPlaced || !this.state.endPlaced}
-          onClick={() => this.postCoordinates()}
-        >
-          Post Coordinates
-        </button>
-        <select
-          id="algorithm_dropdown"
-          onChange={() => {
-            this.setState({
-              algorithm: document.getElementById("algorithm_dropdown").value
-            });
-          }}
-        >
-          <option value="breadth_first_search">Breadth First Search</option>
-          <option value="depth_first_search">Depth First Search</option>
-        </select>
-
-        <DimensionInput
-          onChange={(field, value) => this.setStateDuringOnChange(field, value)}
-          height={this.state.height}
-          width={this.state.width}
-        />
-      </div>
-    );
-  }
-
-  componentDidMount() {
-    this.setState({
-      algorithm: document.getElementById("algorithm_dropdown").value
-    });
+    if (this.state.gridIsCreated) {
+      return (
+        <div className="maze">
+          <Grid
+            squares={this.state.squares}
+            width={this.state.width}
+            height={this.state.height}
+            coords={this.state.coords}
+            onClick={(i, coord) => this.handleSquareClick(i, coord)}
+          />
+          <button
+            disabled={!this.state.startPlaced || !this.state.endPlaced}
+            onClick={() => this.postCoordinates()}
+          >
+            Post Coordinates
+          </button>
+          <select
+            defaultValue={this.state.algorithm}
+            id="algorithm_dropdown"
+            onChange={event => {
+              this.setState({
+                algorithm: event.target.value
+              });
+            }}
+          >
+            <option value="breadth_first_search">Breadth First Search</option>
+            <option value="depth_first_search">Depth First Search</option>
+          </select>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <DimensionInput
+            onChange={(field, value) =>
+              this.setStateDuringOnChange(field, value)
+            }
+            height={this.state.height}
+            width={this.state.width}
+            onCreateGridClick={() => {
+              this.setState({ gridIsCreated: true });
+            }}
+          />
+        </div>
+      );
+    }
   }
 }
 
