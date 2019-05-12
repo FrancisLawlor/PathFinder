@@ -2,17 +2,12 @@ import React, { Component } from "react";
 import DimensionSlider from "./DimensionSlider";
 
 class DimensionInput extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { width_slider: 6 };
-  }
-
   render() {
     return (
       <div>
         <DimensionSlider
           label="Width"
-          width_value={this.props.width}
+          value={this.props.width}
           id="width_slider"
           min="2"
           max="15"
@@ -21,7 +16,7 @@ class DimensionInput extends Component {
         />
         <DimensionSlider
           label="Height"
-          width_value={this.props.width}
+          value={this.props.height}
           id="height_slider"
           min="2"
           max="15"

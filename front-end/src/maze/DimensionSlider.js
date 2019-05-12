@@ -3,7 +3,7 @@ import React, { Component } from "react";
 class DimensionSlider extends Component {
   constructor(props) {
     super(props);
-    this.state = { width_value: this.props.width_value };
+    this.state = { value: this.props.value };
   }
 
   render() {
@@ -12,7 +12,7 @@ class DimensionSlider extends Component {
         <p>{this.props.label}</p>
         <input
           onChange={event => {
-            this.setState({ width_value: event.target.value });
+            this.setState({ value: event.target.value });
             this.props.onChange(
               this.props.state_field_name,
               event.target.value
@@ -22,9 +22,9 @@ class DimensionSlider extends Component {
           type="range"
           min={this.props.min}
           max={this.props.max}
-          value={this.state.width_value}
+          value={this.state.value}
         />
-        <p>{this.state.width_value}</p>
+        <p>{this.state.value}</p>
       </div>
     );
   }
