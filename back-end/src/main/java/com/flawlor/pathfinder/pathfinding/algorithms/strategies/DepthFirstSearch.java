@@ -32,7 +32,7 @@ public class DepthFirstSearch implements AlgorithmStrategy {
 
     private void recursiveDFS(char[][] grid, List<Coordinate> coveredSquares, int i, int j, int prevI, int prevJ,
                                      Map<Coordinate, Coordinate> parents) {
-        if (i < 0 || i >= grid.length || j < 0 || i >= grid[0].length || grid[i][j] == 'P' || grid[i][j] == 'X' || foundEnd) {
+        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == 'P' || grid[i][j] == 'X' || foundEnd) {
             return;
         }
 
