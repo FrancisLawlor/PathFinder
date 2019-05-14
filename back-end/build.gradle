@@ -18,7 +18,8 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor("org.projectlombok:lombok")
+	compileOnly 'org.projectlombok:lombok:1.18.4'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
 }
