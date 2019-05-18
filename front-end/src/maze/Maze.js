@@ -17,7 +17,8 @@ class Maze extends Component {
         end: { row: null, col: null },
         obstacles: []
       },
-      algorithm: "breadth_first_search",
+      algorithms: [],
+      algorithm: "",
       startPlaced: false,
       endPlaced: false,
       gridIsCreated: false,
@@ -91,6 +92,20 @@ class Maze extends Component {
       });
   }
 
+  getAlgorithms() {
+    fetch("http://localhost:8080/algorithms", {
+      method: "get",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          algorithms: data.algorithms,
+          algorithm: data.algorithms[0]
+        });
+      });
+  }
+
   setPathSquares(path_squares) {
     let squares = this.state.squares;
 
@@ -109,6 +124,10 @@ class Maze extends Component {
       [field]: value,
       squares: Array(value * otherDimension).fill(null)
     });
+  }
+
+  componentDidMount() {
+    this.getAlgorithms()
   }
 
   render() {
@@ -133,18 +152,19 @@ class Maze extends Component {
             Post Coordinates
           </button>
           <select
-            disabled={this.state.pathReceived}
-            defaultValue={this.state.algorithm}
-            id="algorithm_dropdown"
-            onChange={event => {
-              this.setState({
-                algorithm: event.target.value
-              });
-            }}
-          >
-            <option value="breadth_first_search">Breadth First Search</option>
-            <option value="depth_first_search">Depth First Search</option>
-          </select>
+                disabled={this.state.pathReceived}
+                defaultValue={this.state.algorithm}
+                id="algorithm_dropdown"
+                onChange={event => {
+                  this.setState({
+                    algorithm: event.target.value
+                  });
+                }}
+              >
+              {this.state.algorithms.map((algorithm, i) => {
+                return <option key={i++}>{algorithm}</option>
+              })}
+              </select>
         </div>
       );
     } else {
