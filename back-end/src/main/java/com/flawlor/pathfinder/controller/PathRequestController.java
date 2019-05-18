@@ -1,17 +1,17 @@
 package com.flawlor.pathfinder.controller;
 
+import com.flawlor.pathfinder.assembler.AlgorithmResponseResourceAssembler;
 import com.flawlor.pathfinder.assembler.PathResponseResourceAssembler;
+import com.flawlor.pathfinder.model.AlgorithmResponse;
 import com.flawlor.pathfinder.model.Coordinate;
 import com.flawlor.pathfinder.model.PathRequest;
 import com.flawlor.pathfinder.model.PathResponse;
+import com.flawlor.pathfinder.pathfinding.algorithms.Algorithm;
 import com.flawlor.pathfinder.pathfinding.algorithms.AlgorithmStrategy;
 import com.flawlor.pathfinder.pathfinding.algorithms.AlgorithmStrategyFactory;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.flawlor.pathfinder.pathfinding.PathFinder;
 
 import javax.validation.Valid;
@@ -20,10 +20,13 @@ import java.util.List;
 
 @RestController
 public class PathRequestController {
-    private final PathResponseResourceAssembler assembler;
+    private final PathResponseResourceAssembler pathResponseResourceAssembler;
+    private final AlgorithmResponseResourceAssembler algorithmResourceAssembler;
 
-    public PathRequestController(PathResponseResourceAssembler assembler) {
-        this.assembler = assembler;
+    public PathRequestController(PathResponseResourceAssembler pathResponseResourceAssembler,
+                                 AlgorithmResponseResourceAssembler algorithmResourceAssembler) {
+        this.pathResponseResourceAssembler = pathResponseResourceAssembler;
+        this.algorithmResourceAssembler = algorithmResourceAssembler;
     }
 
     @CrossOrigin
@@ -36,7 +39,7 @@ public class PathRequestController {
         grid[pathRequest.getCoords().getStart().getRow()][pathRequest.getCoords().getStart().getCol()] = 'S';
         grid[pathRequest.getCoords().getEnd().getRow()][pathRequest.getCoords().getEnd().getCol()] = 'E';
 
-        for (Coordinate obstacle: pathRequest.getCoords().getObstacles()) {
+        for (Coordinate obstacle : pathRequest.getCoords().getObstacles()) {
             grid[obstacle.getRow()][obstacle.getCol()] = 'X';
         }
 
@@ -49,7 +52,20 @@ public class PathRequestController {
 
         PathResponse pathResponse = new PathResponse(coveredSquares, pathSquares);
 
-        return this.assembler.toResource(pathRequest, pathResponse);
+        return this.pathResponseResourceAssembler.toResource(pathRequest, pathResponse);
+    }
 
+    @CrossOrigin
+    @GetMapping(path = "/algorithms", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public Resource<AlgorithmResponse> getAlgorithms() {
+        List<String> algorithms = new ArrayList<>();
+
+        for (Algorithm algorithm : Algorithm.values()) {
+            algorithms.add(algorithm.getCode());
+        }
+
+        AlgorithmResponse algorithmResponse = new AlgorithmResponse(algorithms);
+
+        return this.algorithmResourceAssembler.toResource(algorithmResponse);
     }
 }
