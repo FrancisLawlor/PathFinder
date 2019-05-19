@@ -1,0 +1,14 @@
+{
+    "algorithms": {
+        "algorithms": [
+            "breadth_first_search",
+            "depth_first_search"
+        ],
+        "links": [
+            {
+                "rel": "self",
+                "href": "http://localhost:8080/algorithms"
+            }
+        ]
+    }
+}
