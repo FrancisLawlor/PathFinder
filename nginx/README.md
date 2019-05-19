@@ -1,4 +1,4 @@
- ##NGINX proxy server
+ ## NGINX proxy server
 
  Build image:
 

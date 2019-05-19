@@ -73,7 +73,7 @@ class Maze extends Component {
   }
 
   postCoordinates() {
-    fetch("http://localhost:8080/calculate_path", {
+    fetch("http://localhost/calculate_path", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -93,7 +93,7 @@ class Maze extends Component {
   }
 
   getAlgorithms() {
-    fetch("http://localhost:8080/algorithms", {
+    fetch("http://localhost/algorithms", {
       method: "get",
       headers: { "Content-Type": "application/json" },
     })
