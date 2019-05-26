@@ -1,8 +1,8 @@
 package com.flawlor.pathfinder.pathfinding.algorithms;
 
 public enum Algorithm {
-    BREADTH_FIRST_SEARCH("breadth_first_search"),
-    DEPTH_FIRST_SEARCH("depth_first_search");
+    BREADTH_FIRST_SEARCH("Breadth First Search"),
+    DEPTH_FIRST_SEARCH("Depth First Search");
 
     private final String code;
 
