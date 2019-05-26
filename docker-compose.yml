@@ -8,8 +8,16 @@ services:
       - 3000:3000
     depends_on:
       - back-end
+      - nginx
 
   back-end:
     build: back-end
     ports:
       - 8080:8080
+    depends_on:
+      - nginx
+
+  nginx:
+    build: nginx
+    ports:
+      - 80:80
