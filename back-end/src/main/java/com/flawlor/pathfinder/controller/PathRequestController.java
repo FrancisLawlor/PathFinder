@@ -7,12 +7,11 @@ import com.flawlor.pathfinder.model.Coordinate;
 import com.flawlor.pathfinder.model.PathRequest;
 import com.flawlor.pathfinder.model.PathResponse;
 import com.flawlor.pathfinder.pathfinding.algorithms.Algorithm;
-import com.flawlor.pathfinder.pathfinding.algorithms.AlgorithmStrategy;
 import com.flawlor.pathfinder.pathfinding.algorithms.AlgorithmStrategyFactory;
+import com.flawlor.pathfinder.pathfinding.algorithms.AlgorithmType;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import com.flawlor.pathfinder.pathfinding.PathFinder;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -35,20 +34,11 @@ public class PathRequestController {
         List<Coordinate> coveredSquares = new ArrayList<>();
         List<Coordinate> pathSquares = new ArrayList<>();
 
-        char[][] grid = new char[pathRequest.getHeight()][pathRequest.getWidth()];
-        grid[pathRequest.getCoords().getStart().getRow()][pathRequest.getCoords().getStart().getCol()] = 'S';
-        grid[pathRequest.getCoords().getEnd().getRow()][pathRequest.getCoords().getEnd().getCol()] = 'E';
-
-        for (Coordinate obstacle : pathRequest.getCoords().getObstacles()) {
-            grid[obstacle.getRow()][obstacle.getCol()] = 'X';
-        }
+        char[][] grid = createGrid(pathRequest);
 
         AlgorithmStrategyFactory algorithmStrategyFactory = new AlgorithmStrategyFactory();
-
-        AlgorithmStrategy algorithm = algorithmStrategyFactory.createAlgorithmStrategy(pathRequest.getAlgorithm());
-
-        PathFinder.calculatePath(algorithm, grid, coveredSquares, pathSquares, pathRequest.getCoords().getStart(),
-                pathRequest.getCoords().getEnd());
+        Algorithm algorithm = algorithmStrategyFactory.createAlgorithmStrategy(pathRequest.getAlgorithm());
+        algorithm.findPath(grid, coveredSquares, pathSquares, pathRequest.getCoords().getStart(), pathRequest.getCoords().getEnd());
 
         PathResponse pathResponse = new PathResponse(coveredSquares, pathSquares);
 
@@ -60,12 +50,24 @@ public class PathRequestController {
     public Resource<AlgorithmResponse> getAlgorithms() {
         List<String> algorithms = new ArrayList<>();
 
-        for (Algorithm algorithm : Algorithm.values()) {
+        for (AlgorithmType algorithm : AlgorithmType.values()) {
             algorithms.add(algorithm.getCode());
         }
 
         AlgorithmResponse algorithmResponse = new AlgorithmResponse(algorithms);
 
         return this.algorithmResourceAssembler.toResource(algorithmResponse);
+    }
+
+    private char[][] createGrid(PathRequest pathRequest) {
+        char[][] grid = new char[pathRequest.getHeight()][pathRequest.getWidth()];
+        grid[pathRequest.getCoords().getStart().getRow()][pathRequest.getCoords().getStart().getCol()] = 'S';
+        grid[pathRequest.getCoords().getEnd().getRow()][pathRequest.getCoords().getEnd().getCol()] = 'E';
+
+        for (Coordinate obstacle : pathRequest.getCoords().getObstacles()) {
+            grid[obstacle.getRow()][obstacle.getCol()] = 'X';
+        }
+
+        return grid;
     }
 }

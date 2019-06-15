@@ -1,16 +1,10 @@
 package com.flawlor.pathfinder.pathfinding.algorithms;
 
-public enum Algorithm {
-    BREADTH_FIRST_SEARCH("Breadth First Search"),
-    DEPTH_FIRST_SEARCH("Depth First Search");
+import com.flawlor.pathfinder.model.Coordinate;
 
-    private final String code;
+import java.util.List;
 
-    Algorithm(String code) {
-        this.code = code;
-    }
-
-    public String getCode() {
-        return this.code;
-    }
+public interface Algorithm {
+    void findPath(char[][] grid, List<Coordinate> coveredSquares, List<Coordinate> pathSquares,
+                  Coordinate start, Coordinate end);
 }

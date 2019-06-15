@@ -1,22 +1,22 @@
 package com.flawlor.pathfinder.pathfinding.algorithms;
 
-import com.flawlor.pathfinder.pathfinding.algorithms.strategies.BreadthFirstSearch;
-import com.flawlor.pathfinder.pathfinding.algorithms.strategies.DepthFirstSearch;
+import com.flawlor.pathfinder.pathfinding.algorithms.strategies.BreadthFirst;
+import com.flawlor.pathfinder.pathfinding.algorithms.strategies.DepthFirst;
 
 public class AlgorithmStrategyFactory {
-    public AlgorithmStrategy createAlgorithmStrategy(String algorithmStrategy) {
-        AlgorithmStrategy strategy = null;
+    public Algorithm createAlgorithmStrategy(String algorithmName) {
+        Algorithm algorithm = null;
 
-        if (algorithmStrategy != null) {
-            if (Algorithm.DEPTH_FIRST_SEARCH.getCode().equalsIgnoreCase(algorithmStrategy)) {
-                strategy = new DepthFirstSearch();
-            } else if (Algorithm.BREADTH_FIRST_SEARCH.getCode().equalsIgnoreCase(algorithmStrategy)) {
-                strategy = new BreadthFirstSearch();
+        if (algorithmName != null) {
+            if (AlgorithmType.DEPTH_FIRST_SEARCH.getCode().equalsIgnoreCase(algorithmName)) {
+                algorithm = new DepthFirst();
+            } else if (AlgorithmType.BREADTH_FIRST_SEARCH.getCode().equalsIgnoreCase(algorithmName)) {
+                algorithm = new BreadthFirst();
             } else {
-                System.err.println("Unknown algorithm strategy");
+                System.err.println("Unknown algorithm");
             }
         }
 
-        return strategy;
+        return algorithm;
     }
 }
