@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Grid from "./Grid";
 import "./Maze.css";
 import DimensionInput from "./DimensionInput";
+import HTTPClient from "../../api/HTTPClient.js";
 
 class Maze extends Component {
   constructor(props) {
@@ -73,43 +74,36 @@ class Maze extends Component {
   }
 
   postCoordinates() {
-    fetch("http://localhost/calculate_path", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        height: this.state.height,
-        width: this.state.width,
-        coords: this.state.coords,
-        algorithm: this.state.algorithm
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
+    let body = {
+      height: this.state.height,
+      width: this.state.width,
+      coords: this.state.coords,
+      algorithm: this.state.algorithm
+    };
+
+    HTTPClient.postRequest("http://localhost/calculate_path", body).then(
+      data => {
         this.setState({
           squares: this.setPathSquares(data.path_squares),
           pathReceived: true
         });
-      });
+      }
+    );
   }
 
   getAlgorithms() {
-    fetch("http://localhost/algorithms", {
-      method: "get",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          algorithms: data.algorithms,
-          algorithm: data.algorithms[0]
-        });
+    HTTPClient.getRequest("http://localhost/algorithms").then(data => {
+      this.setState({
+        algorithms: data.algorithms,
+        algorithm: data.algorithms[0]
       });
+    });
   }
 
   setPathSquares(path_squares) {
     let squares = this.state.squares;
 
-    for (let i = 0; i < path_squares.length; i++) {
+    for (let i = 1; i < path_squares.length - 1; i++) {
       let index = path_squares[i].row * this.state.width + path_squares[i].col;
       squares[index] = "P";
     }
@@ -127,7 +121,7 @@ class Maze extends Component {
   }
 
   componentDidMount() {
-    this.getAlgorithms()
+    this.getAlgorithms();
   }
 
   render() {
@@ -152,19 +146,19 @@ class Maze extends Component {
             Post Coordinates
           </button>
           <select
-                disabled={this.state.pathReceived}
-                defaultValue={this.state.algorithm}
-                id="algorithm_dropdown"
-                onChange={event => {
-                  this.setState({
-                    algorithm: event.target.value
-                  });
-                }}
-              >
-              {this.state.algorithms.map((algorithm, i) => {
-                return <option key={i++}>{algorithm}</option>
-              })}
-              </select>
+            disabled={this.state.pathReceived}
+            defaultValue={this.state.algorithm}
+            id="algorithm_dropdown"
+            onChange={event => {
+              this.setState({
+                algorithm: event.target.value
+              });
+            }}
+          >
+            {this.state.algorithms.map((algorithm, i) => {
+              return <option key={i++}>{algorithm}</option>;
+            })}
+          </select>
         </div>
       );
     } else {

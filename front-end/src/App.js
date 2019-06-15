@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Maze from "./maze/Maze";
+import Maze from "./components/maze/Maze";
 
 class App extends Component {
   render() {
