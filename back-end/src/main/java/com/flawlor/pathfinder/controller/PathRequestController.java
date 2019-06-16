@@ -9,6 +9,7 @@ import com.flawlor.pathfinder.model.PathResponse;
 import com.flawlor.pathfinder.pathfinding.algorithms.Algorithm;
 import com.flawlor.pathfinder.pathfinding.algorithms.AlgorithmStrategyFactory;
 import com.flawlor.pathfinder.pathfinding.algorithms.AlgorithmType;
+import com.flawlor.pathfinder.pathfinding.grid.GridPosition;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -61,11 +62,11 @@ public class PathRequestController {
 
     private char[][] createGrid(PathRequest pathRequest) {
         char[][] grid = new char[pathRequest.getHeight()][pathRequest.getWidth()];
-        grid[pathRequest.getCoords().getStart().getRow()][pathRequest.getCoords().getStart().getCol()] = 'S';
-        grid[pathRequest.getCoords().getEnd().getRow()][pathRequest.getCoords().getEnd().getCol()] = 'E';
+        grid[pathRequest.getCoords().getStart().getRow()][pathRequest.getCoords().getStart().getCol()] = GridPosition.START.getCode();
+        grid[pathRequest.getCoords().getEnd().getRow()][pathRequest.getCoords().getEnd().getCol()] = GridPosition.END.getCode();
 
         for (Coordinate obstacle : pathRequest.getCoords().getObstacles()) {
-            grid[obstacle.getRow()][obstacle.getCol()] = 'X';
+            grid[obstacle.getRow()][obstacle.getCol()] = GridPosition.OBSTACLE.getCode();
         }
 
         return grid;

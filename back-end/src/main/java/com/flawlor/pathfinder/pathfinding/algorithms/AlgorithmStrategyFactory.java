@@ -1,7 +1,7 @@
 package com.flawlor.pathfinder.pathfinding.algorithms;
 
-import com.flawlor.pathfinder.pathfinding.algorithms.strategies.BreadthFirst;
-import com.flawlor.pathfinder.pathfinding.algorithms.strategies.DepthFirst;
+import com.flawlor.pathfinder.pathfinding.algorithms.searches.BreadthFirst;
+import com.flawlor.pathfinder.pathfinding.algorithms.searches.DepthFirst;
 
 public class AlgorithmStrategyFactory {
     public Algorithm createAlgorithmStrategy(String algorithmName) {

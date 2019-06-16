@@ -1,4 +1,4 @@
-package com.flawlor.pathfinder.pathfinding.algorithms.strategies;
+package com.flawlor.pathfinder.pathfinding.algorithms.searches;
 
 import com.flawlor.pathfinder.model.Coordinate;
 import com.flawlor.pathfinder.pathfinding.algorithms.Algorithm;
@@ -19,6 +19,7 @@ public abstract class Search implements Algorithm {
         search(grid, coveredSquares, start, end, parents);
 
         if (foundEnd) {
+            pathSquares.add(end);
             Coordinate currParent = parents.get(end);
 
             while (parents.containsKey(currParent)) {

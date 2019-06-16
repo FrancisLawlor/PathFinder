@@ -1,6 +1,7 @@
-package com.flawlor.pathfinder.pathfinding.algorithms.strategies;
+package com.flawlor.pathfinder.pathfinding.algorithms.searches;
 
 import com.flawlor.pathfinder.model.Coordinate;
+import com.flawlor.pathfinder.pathfinding.grid.GridPosition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,28 +34,25 @@ public class BreadthFirst extends Search {
                 remainingChildrenForCurrentParent = 4;
             }
 
-            if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length || grid[row][col] == 'P' ||
-                    grid[row][col] == 'X' || foundEnd) {
+            if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length || grid[row][col] == GridPosition.OBSTACLE.getCode()
+                    || foundEnd) {
                 continue;
             }
 
             parents.put(new Coordinate(row, col), currentParents.get(0));
             currentParents.add(new Coordinate(row, col));
 
-            if (grid[row][col] == 'E') {
+            if (grid[row][col] == GridPosition.END.getCode()) {
                 foundEnd = true;
                 return;
             }
 
-            if (grid[row][col] != 'S') {
-                coveredSquares.add(new Coordinate(row, col));
-            }
+            coveredSquares.add(new Coordinate(row, col));
+            grid[row][col] = GridPosition.OBSTACLE.getCode();
 
-            grid[row][col] = 'P';
-
-            for (int a = 0; a < ROW_VECTOR.length; a++) {
-                rows.add(row + ROW_VECTOR[a]);
-                cols.add(col + COL_VECTOR[a]);
+            for (int i = 0; i < ROW_VECTOR.length; i++) {
+                rows.add(row + ROW_VECTOR[i]);
+                cols.add(col + COL_VECTOR[i]);
             }
         }
     }
