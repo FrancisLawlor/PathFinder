@@ -105,7 +105,7 @@ class Maze extends Component {
 
     for (let i = 1; i < path_squares.length - 1; i++) {
       let index = path_squares[i].row * this.state.width + path_squares[i].col;
-      squares[index] = "P";
+      squares[index] = "" + i;
     }
     return squares;
   }
