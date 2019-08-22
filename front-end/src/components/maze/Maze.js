@@ -93,7 +93,10 @@ class Maze extends Component {
         this.setState({
           squares: this.setPathSquares(data.path_squares),
           pathReceived: true,
-          instructionalMessage: `Here is the path for ${this.state.algorithm}!`
+          instructionalMessage:
+            data.path_squares.length === 0
+              ? "There is no path!"
+              : `Here is the path for ${this.state.algorithm}!`
         });
       }
     );
@@ -154,7 +157,9 @@ class Maze extends Component {
           />
         </div>
         <div className={this.state.gridIsCreated ? "grid-visible" : ""}>
-          <p>{this.state.instructionalMessage}</p>
+          <p className="instructionalMessage">
+            {this.state.instructionalMessage}
+          </p>
           <div
             className={
               this.state.gridIsCreated ? "grid-visible" : "grid-invisible"
@@ -171,6 +176,7 @@ class Maze extends Component {
               onClick={(i, coord) => this.handleSquareClick(i, coord)}
             />
             <button
+              className="seePathButton"
               disabled={
                 !this.state.startPlaced ||
                 !this.state.endPlaced ||
@@ -181,6 +187,7 @@ class Maze extends Component {
               See Path
             </button>
             <select
+              className="algorithmDropdown"
               disabled={this.state.pathReceived || !this.state.gridIsCreated}
               defaultValue={this.state.algorithm}
               id="algorithm_dropdown"
