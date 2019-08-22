@@ -18,11 +18,12 @@ class Maze extends Component {
         end: { row: null, col: null },
         obstacles: []
       },
+      instructionalMessage:
+        "Choose dimensions for the grid using the sliders on the left.",
       algorithms: [],
       algorithm: "",
       startPlaced: false,
       endPlaced: false,
-      gridIsCreated: false,
       pathReceived: false
     };
   }
@@ -42,7 +43,10 @@ class Maze extends Component {
         obstacles: this.state.coords.obstacles
       };
       this.placeCoordinate(squares, i, "S", updatedCoord);
-      this.setState({ startPlaced: true });
+      this.setState({
+        startPlaced: true,
+        instructionalMessage: "Place the end point on the grid!"
+      });
     } else if (!this.state.endPlaced) {
       let updatedCoord = {
         start: this.state.coords.start,
@@ -50,7 +54,10 @@ class Maze extends Component {
         obstacles: this.state.coords.obstacles
       };
       this.placeCoordinate(squares, i, "E", updatedCoord);
-      this.setState({ endPlaced: true });
+      this.setState({
+        endPlaced: true,
+        instructionalMessage: "Place some obstacles on grid!"
+      });
     } else {
       if (!this.state.pathReceived) {
         let updatedCoord = {
@@ -85,7 +92,8 @@ class Maze extends Component {
       data => {
         this.setState({
           squares: this.setPathSquares(data.path_squares),
-          pathReceived: true
+          pathReceived: true,
+          instructionalMessage: `Here is the path for ${this.state.algorithm}!`
         });
       }
     );
@@ -120,63 +128,76 @@ class Maze extends Component {
     });
   }
 
+  disableGridCreationInputs = () => {
+    this.setState({
+      gridIsCreated: true,
+      instructionalMessage: "Place the starting point on the grid!"
+    });
+  };
+
   componentDidMount() {
     this.getAlgorithms();
   }
 
   render() {
-    if (this.state.gridIsCreated) {
-      return (
-        <div className="maze">
-          <Grid
-            squares={this.state.squares}
-            width={this.state.width}
-            height={this.state.height}
-            coords={this.state.coords}
-            onClick={(i, coord) => this.handleSquareClick(i, coord)}
-          />
-          <button
-            disabled={
-              !this.state.startPlaced ||
-              !this.state.endPlaced ||
-              this.state.pathReceived
-            }
-            onClick={() => this.postCoordinates()}
-          >
-            Post Coordinates
-          </button>
-          <select
-            disabled={this.state.pathReceived}
-            defaultValue={this.state.algorithm}
-            id="algorithm_dropdown"
-            onChange={event => {
-              this.setState({
-                algorithm: event.target.value
-              });
-            }}
-          >
-            {this.state.algorithms.map((algorithm, i) => {
-              return <option key={i++}>{algorithm}</option>;
-            })}
-          </select>
-        </div>
-      );
-    } else {
-      return (
-        <div>
+    return (
+      <div className="maze">
+        <div className="dimensionInput">
           <DimensionInput
             onChange={(field, value) =>
               this.setStateDuringOnChange(field, value)
             }
             height={this.state.height}
             width={this.state.width}
-            onCreateGridClick={() => {
-              this.setState({ gridIsCreated: true });
-            }}
+            gridIsCreated={this.state.gridIsCreated}
+            onCreateGridClick={this.disableGridCreationInputs}
           />
         </div>
-      );
-    }
+        <div className={this.state.gridIsCreated ? "grid-visible" : ""}>
+          <p>{this.state.instructionalMessage}</p>
+          <div
+            className={
+              this.state.gridIsCreated ? "grid-visible" : "grid-invisible"
+            }
+          >
+            <Grid
+              className={
+                this.state.gridIsCreated ? "grid-visible" : "grid-invisible"
+              }
+              squares={this.state.squares}
+              width={this.state.width}
+              height={this.state.height}
+              coords={this.state.coords}
+              onClick={(i, coord) => this.handleSquareClick(i, coord)}
+            />
+            <button
+              disabled={
+                !this.state.startPlaced ||
+                !this.state.endPlaced ||
+                this.state.pathReceived
+              }
+              onClick={() => this.postCoordinates()}
+            >
+              See Path
+            </button>
+            <select
+              disabled={this.state.pathReceived || !this.state.gridIsCreated}
+              defaultValue={this.state.algorithm}
+              id="algorithm_dropdown"
+              onChange={event => {
+                this.setState({
+                  algorithm: event.target.value
+                });
+              }}
+            >
+              {this.state.algorithms.map((algorithm, i) => {
+                return <option key={i++}>{algorithm}</option>;
+              })}
+            </select>
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 

@@ -13,6 +13,7 @@ class DimensionInput extends Component {
           max="15"
           state_field_name="width"
           onChange={(field, value) => this.props.onChange(field, value)}
+          gridIsCreated={this.props.gridIsCreated}
         />
         <DimensionSlider
           label="Height"
@@ -22,8 +23,14 @@ class DimensionInput extends Component {
           max="15"
           state_field_name="height"
           onChange={(field, value) => this.props.onChange(field, value)}
+          gridIsCreated={this.props.gridIsCreated}
         />
-        <button onClick={this.props.onCreateGridClick}>Create Grid</button>
+        <button
+          disabled={this.props.gridIsCreated}
+          onClick={this.props.onCreateGridClick}
+        >
+          Create Grid
+        </button>
       </div>
     );
   }

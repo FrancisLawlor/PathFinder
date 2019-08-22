@@ -36,3 +36,19 @@ body {
   display: flex;
   flex-direction: row;
 }
+
+.maze { 
+  display:flex; flex-direction:row;
+}
+
+.dimensionInput {
+  padding-right: 20px;
+}
+
+.grid-invisible {
+  display: none;
+}
+
+.grid-visible {
+  display: block;
+}
