@@ -81,7 +81,7 @@ class Maze extends Component {
       algorithm: this.state.algorithm
     };
 
-    HTTPClient.postRequest("http://localhost/calculate_path", body).then(
+    HTTPClient.postRequest("https://francislawlor-pathfinder-be.herokuapp.com/calculate_path", body).then(
       data => {
         this.setState({
           squares: this.setPathSquares(data.path_squares),
@@ -92,7 +92,7 @@ class Maze extends Component {
   }
 
   getAlgorithms() {
-    HTTPClient.getRequest("http://localhost/algorithms").then(data => {
+    HTTPClient.getRequest("https://francislawlor-pathfinder-be.herokuapp.com/algorithms").then(data => {
       this.setState({
         algorithms: data.algorithms,
         algorithm: data.algorithms[0]

@@ -7,4 +7,4 @@ RUN chmod +x ./gradlew
 RUN ./gradlew build
 WORKDIR /pathfinder-back-end/build/libs
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "pathfinder-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "pathfinder-0.0.1-SNAPSHOT.jar"]
