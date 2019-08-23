@@ -23,6 +23,7 @@ class DimensionSlider extends Component {
           min={this.props.min}
           max={this.props.max}
           value={this.state.value}
+          disabled={this.props.gridIsCreated}
         />
         <p>{this.state.value}</p>
       </div>
