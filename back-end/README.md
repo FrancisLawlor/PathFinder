@@ -74,7 +74,7 @@ Example Request:
             }
         ]
     },
-    "algorithm": "breadth_first_search"
+    "algorithm": "Breadth First Search"
 }
 ```
 
