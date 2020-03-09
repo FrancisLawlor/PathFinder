@@ -7,7 +7,6 @@ import com.flawlor.pathfinder.model.PathRequest;
 import com.flawlor.pathfinder.model.PathResponse;
 import com.flawlor.pathfinder.service.AlgorithmService;
 import com.flawlor.pathfinder.service.CalculatePathService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -16,19 +15,20 @@ import javax.validation.Valid;
 
 @RestController
 public class PathRequestController {
-    @Autowired
-    AlgorithmService algorithmService;
-
-    @Autowired
-    CalculatePathService calculatePathService;
+    private final AlgorithmService algorithmService;
+    private final CalculatePathService calculatePathService;
 
     private final PathResponseResourceAssembler pathResponseResourceAssembler;
     private final AlgorithmResponseResourceAssembler algorithmResourceAssembler;
 
     public PathRequestController(PathResponseResourceAssembler pathResponseResourceAssembler,
-                                 AlgorithmResponseResourceAssembler algorithmResourceAssembler) {
+                                 AlgorithmResponseResourceAssembler algorithmResourceAssembler,
+                                 AlgorithmService algorithmService,
+                                 CalculatePathService calculatePathService) {
         this.pathResponseResourceAssembler = pathResponseResourceAssembler;
         this.algorithmResourceAssembler = algorithmResourceAssembler;
+        this.algorithmService = algorithmService;
+        this.calculatePathService = calculatePathService;
     }
 
     @CrossOrigin
