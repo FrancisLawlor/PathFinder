@@ -21,14 +21,20 @@ public class CalculatePathServiceImpl implements CalculatePathService {
 
         char[][] grid = createGrid(pathRequest);
 
-        AlgorithmStrategyFactory algorithmStrategyFactory = new AlgorithmStrategyFactory();
-        Algorithm algorithm = algorithmStrategyFactory.createAlgorithmStrategy(pathRequest.getAlgorithm());
-        algorithm.findPath(grid, coveredSquares, pathSquares, pathRequest.getCoords().getStart(), pathRequest.getCoords().getEnd());
+        if (grid.length != 0) {
+            AlgorithmStrategyFactory algorithmStrategyFactory = new AlgorithmStrategyFactory();
+            Algorithm algorithm = algorithmStrategyFactory.createAlgorithmStrategy(pathRequest.getAlgorithm());
+            algorithm.findPath(grid, coveredSquares, pathSquares, pathRequest.getCoords().getStart(), pathRequest.getCoords().getEnd());
+        }
 
         return new PathResponse(coveredSquares, pathSquares);
     }
 
     private char[][] createGrid(PathRequest pathRequest) {
+        if (pathRequest.getHeight() == 0 || pathRequest.getWidth() == 0) {
+            return new char[0][0];
+        }
+
         char[][] grid = new char[pathRequest.getHeight()][pathRequest.getWidth()];
         grid[pathRequest.getCoords().getStart().getRow()][pathRequest.getCoords().getStart().getCol()] = GridPosition.START.getCode();
         grid[pathRequest.getCoords().getEnd().getRow()][pathRequest.getCoords().getEnd().getCol()] = GridPosition.END.getCode();
