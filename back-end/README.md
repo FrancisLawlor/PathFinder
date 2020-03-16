@@ -14,6 +14,9 @@ or use Docker
 docker build -t back-end .
 docker run -p 8080:8080 back-end
 ```
+### Swagger
+
+The application utilises [Swagger](https://swagger.io/) to provide documentation for the back-end API. The deployed heroku application exposes this documentation [here](https://francislawlor-pathfinder-be.herokuapp.com/swagger-ui.html).
 
 ### End points
 
