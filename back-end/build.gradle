@@ -22,4 +22,7 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok:1.18.4'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
+	compile 'org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE'
+	compile 'io.springfox:springfox-swagger2:2.9.2'
+	compile 'io.springfox:springfox-swagger-ui:2.9.2'
 }
